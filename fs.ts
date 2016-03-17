@@ -1,23 +1,26 @@
 'use strict';
 
-import {ErrFunc, EmptyFunc, TypedFunc} from './func';
+import {ErrFunc, EmptyFunc} from './func';
 import {Context} from './context';
+import {ModeActions, Mode} from './mode';
 
 // mountings:
 //     /etc/passwd: user system
 
-export interface ModeFunc extends TypedFunc {
-    (context: Context, callback: EmptyFunc, fail: ErrFunc): void;
-};
-export interface OwnerFunc {
-    (context: Context, callback: (user: string) => void): void;
-};
+export class Node {
+    mode: Mode;
 
-export interface Node {
-    read: ModeFunc;
-    write: ModeFunc;
-    exec: ModeFunc;
-    owner: OwnerFunc;
+    getattr(
+        context: Context,
+        callback: (mode: string) => void,
+        fail: ErrFunc
+    ) {
+        this.mode.check(
+            context, ModeActions.read,
+            () => this.mode.get(context, callback),
+            fail
+        );
+    }
 };
 
 // Node.prototype.getattr = function (context, callback, fail) {
