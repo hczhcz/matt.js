@@ -8,7 +8,3 @@ export interface ErrFunc {
 export interface EmptyFunc {
     (): void;
 };
-
-export interface TypedFunc {
-    type(callback: (type: string) => void): void; // TODO: replace by typeinfo/constructor?
-};
