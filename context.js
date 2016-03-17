@@ -1,7 +1,7 @@
 'use strict';
 
-var Context = function (auth, root) {
-    this._auth = auth;
+var Context = function (user, root) {
+    this._user = user;
     this._root = root;
 };
 
