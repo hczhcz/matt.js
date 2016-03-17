@@ -1,9 +1,6 @@
 'use strict';
 
-class Context {
-    constructor(user: string, root: string) {
-        //
-    }
+export interface Context {
+    user: string;
+    root: string;
 };
-
-module.exports = Context;
