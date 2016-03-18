@@ -8,22 +8,17 @@ export interface Context {
 };
 
 export interface User {
-    name(context: Context, callback: (name: string) => void): void;
+    name(c_: Context, cb_: (name: string) => void): void;
     distance(user: User): number;
 };
 
 export enum ModeActions {read, write, exec};
 export interface Mode {
-    description(context: Context, callback: (description: string) => void): void;
-    check(context: Context, action: ModeActions, callback: EmptyFunc, fail: ErrFunc): void;
+    description(c_: Context, cb_: (mode: string) => void): void;
+    check(c_: Context, action: ModeActions, cb_: EmptyFunc, fl_: ErrFunc): void;
 };
 
 export interface File {
-    mode: Mode;
+    getattr(c_: Context, cb_: (mode: string, owner: User) => void, fl_: ErrFunc): void;
 
-    getattr(
-        context: Context,
-        callback: (mode: string) => void,
-        fail: ErrFunc
-    ): void;
 };
