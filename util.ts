@@ -5,6 +5,10 @@ export interface ErrFunc {
     (err: string): void; // TODO
 };
 
-export interface EmptyFunc {
+export interface VoidFunc {
     (): void;
+};
+
+export interface ValFunc<T> {
+    (value: T): void;
 };
