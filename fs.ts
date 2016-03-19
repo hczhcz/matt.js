@@ -50,21 +50,3 @@ export interface Dir extends Node {
 // Dir.prototype.create = function (node, callback) {
 //     this._list
 // };
-
-// TODO
-// create
-// link
-// lock
-// mkdir
-// open
-// opendir
-// read
-// readdir
-// readlink
-// rename
-// rmdir
-// statfs
-// symlink
-// truncate
-// unlink
-// write
