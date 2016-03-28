@@ -16,7 +16,7 @@ export class UnixMode implements Mode {
         context: Context, owner: User, action: ModeActions,
         callback: VoidFunc, fail: ErrFunc
     ): void {
-        owner.distance(context, context.user, (distance: number): void => {
+        owner.distance(context, (distance: number): void => {
             let mode = distance === 0 ? this._user
                      : distance === 1 ? this._group
                      : this._all;

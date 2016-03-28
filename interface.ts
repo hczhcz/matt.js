@@ -3,13 +3,13 @@
 import {ErrFunc, VoidFunc, ValFunc} from './util';
 
 export interface Context {
-    user: User;
-    root: Node;
+    user(cb_: ValFunc<User>): void;
+    root(cb_: ValFunc<Node>): void;
 };
 
 export interface User {
     name(c_: Context, cb_: ValFunc<string>): void;
-    distance(c_: Context, user: User, cb_: ValFunc<number>): void;
+    distance(c_: Context, cb_: ValFunc<number>): void;
 
     // unix
     group?(c_: Context, cb_: ValFunc<string>): void;
