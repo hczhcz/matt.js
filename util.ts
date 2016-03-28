@@ -1,8 +1,9 @@
 'use strict';
 
+export class SimpleError extends Error {}; // TODO
+
 export interface ErrFunc {
     (err: Error): void;
-    (err: string): void; // TODO
 };
 
 export interface VoidFunc {
