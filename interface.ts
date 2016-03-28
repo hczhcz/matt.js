@@ -18,7 +18,7 @@ export interface User {
 export enum ModeActions {read, write, exec};
 export interface Mode {
     description(c_: Context, cb_: ValFunc<string>): void;
-    check(c_: Context, action: ModeActions, cb_: VoidFunc, fl_: ErrFunc): void;
+    check(c_: Context, owner: User, action: ModeActions, cb_: VoidFunc, fl_: ErrFunc): void;
 };
 
 export interface File {
