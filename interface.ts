@@ -22,7 +22,7 @@ export interface Mode {
 };
 
 export interface Node {
-    getattr(c_: Context, cb_: (mode: string, owner: User) => void, fl_: ErrFunc): void;
+    getattr(c_: Context, cb_: (mode: Mode, owner: User) => void, fl_: ErrFunc): void;
     chmod  (c_: Context, mode: Mode, cb_: VoidFunc, fl_: ErrFunc): void;
     chown  (c_: Context, owner: User, cb_: VoidFunc, fl_: ErrFunc): void;
 

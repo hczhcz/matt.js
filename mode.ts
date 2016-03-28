@@ -17,13 +17,13 @@ export class UnixMode implements Mode {
         callback: VoidFunc, fail: ErrFunc
     ): void {
         owner.distance(context, (distance: number): void => {
-            let mode = distance === 0 ? this._user
-                     : distance === 1 ? this._group
-                     : this._all;
-            let mask = action === ModeActions.read ? 4
-                     : action === ModeActions.write ? 2
-                     : action === ModeActions.exec ? 1
-                     : 0; // never reach
+            const mode = distance === 0 ? this._user
+                       : distance === 1 ? this._group
+                       : this._all;
+            const mask = action === ModeActions.read ? 4
+                       : action === ModeActions.write ? 2
+                       : action === ModeActions.exec ? 1
+                       : 0; // never reach
 
             if ((mode & mask) === mask) {
                 callback();

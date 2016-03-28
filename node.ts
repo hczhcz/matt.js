@@ -4,9 +4,13 @@ import {SimpleError, ErrFunc, VoidFunc, ValFunc} from './util';
 import {Context, User, Mode, Node} from './interface';
 
 export class BaseNode implements Node {
+    constructor(private _mode: Mode, private _owner: User) {
+        //
+    }
+
     getattr(
         context: Context,
-        callback: (mode: string, owner: User) => void, fail: ErrFunc
+        callback: (mode: Mode, owner: User) => void, fail: ErrFunc
     ): void {
         //
     }
