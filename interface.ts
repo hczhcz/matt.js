@@ -4,7 +4,7 @@ import {ErrFunc, VoidFunc, ValFunc} from './util';
 
 export interface Context {
     user: User;
-    root: File;
+    root: Node;
 };
 
 export interface User {
@@ -21,21 +21,21 @@ export interface Mode {
     check(c_: Context, owner: User, action: ModeActions, cb_: VoidFunc, fl_: ErrFunc): void;
 };
 
-export interface File {
+export interface Node {
     getattr(c_: Context, cb_: (mode: string, owner: User) => void, fl_: ErrFunc): void;
     chmod  (c_: Context, mode: Mode, cb_: VoidFunc, fl_: ErrFunc): void;
     chown  (c_: Context, owner: User, cb_: VoidFunc, fl_: ErrFunc): void;
 
     // dir
     readdir?(c_: Context, cb_: ValFunc<string[]>, fl_: ErrFunc): void;
-    open?   (c_: Context, name: string, cb_: ValFunc<File>, fl_: ErrFunc): void;
-    link?   (c_: Context, name: string, file: File, cb_: VoidFunc, fl_: ErrFunc): void;
-    unlink? (c_: Context, name: string, cb_: ValFunc<File>, fl_: ErrFunc): void;
-    swap?   (c_: Context, name: string, file: File, cb_: ValFunc<File>, fl_: ErrFunc): void;
+    open?   (c_: Context, name: string, cb_: ValFunc<Node>, fl_: ErrFunc): void;
+    link?   (c_: Context, name: string, node: Node, cb_: VoidFunc, fl_: ErrFunc): void;
+    unlink? (c_: Context, name: string, cb_: ValFunc<Node>, fl_: ErrFunc): void;
+    swap?   (c_: Context, name: string, node: Node, cb_: ValFunc<Node>, fl_: ErrFunc): void;
 
     // link
-    readlink? (c_: Context, cb_: ValFunc<File>, fl_: ErrFunc): void;
-    writelink?(c_: Context, file: File, cb_: VoidFunc, fl_: ErrFunc): void;
+    readlink? (c_: Context, cb_: ValFunc<Node>, fl_: ErrFunc): void;
+    writelink?(c_: Context, node: Node, cb_: VoidFunc, fl_: ErrFunc): void;
 
     // file // TODO: stream io?
     // read? (c_: Context, , cb_: VoidFunc, fl_: ErrFunc): void;

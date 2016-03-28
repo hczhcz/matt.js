@@ -1,9 +1,9 @@
 'use strict';
 
-import {Context, User, File} from './interface';
+import {Context, User, Node} from './interface';
 
 export class PlainContext implements Context {
-    constructor(public user: User, public root: File) {
+    constructor(public user: User, public root: Node) {
         //
     }
 };
