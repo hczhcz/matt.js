@@ -8,26 +8,26 @@ export class UnixUser implements User {
         //
     }
 
-    group(context: Context, callback: ValFunc<string>) {
+    group(context: Context, callback: ValFunc<string>): void {
         callback(this._group);
     }
 
-    name(context: Context, callback: ValFunc<string>) {
+    name(context: Context, callback: ValFunc<string>): void {
         callback(this._name);
     }
 
-    distance(context: Context, user: User, callback: ValFunc<number>) {
-        user.name(context, (name: string) => {
+    distance(context: Context, user: User, callback: ValFunc<number>): void {
+        user.name(context, (name: string): void => {
             if (name === this._name) {
                 callback(0);
             } else if (user.group) {
-                user.group(context, (group: string) => {
+                user.group(context, (group: string): void => {
                     if (group === this._group) {
                         callback(1);
                     } else {
                         callback(Infinity);
                     }
-                })
+                });
             } else {
                 callback(Infinity);
             }
