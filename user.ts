@@ -21,7 +21,7 @@ export class UnixUser implements User {
             user.name(context, (name: string): void => {
                 if (name === this._name) {
                     callback(0);
-                } else if (user.group) {
+                } else if (user.group !== undefined) {
                     user.group(context, (group: string): void => {
                         if (group === this._group) {
                             callback(1);
