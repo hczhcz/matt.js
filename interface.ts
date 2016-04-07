@@ -13,6 +13,7 @@ export interface User {
 
     // unix
     group?(c_: Context, cb_: ValFunc<string>): void;
+    superuser?(c_: Context, cb_: ValFunc<boolean>): void;
 };
 
 export enum ModeActions {read, write, exec};
