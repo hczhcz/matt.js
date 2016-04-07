@@ -16,7 +16,7 @@ export interface User {
     superuser?(c_: Context, cb_: ValFunc<boolean>): void;
 };
 
-export enum ModeActions {read, write, exec};
+export enum ModeActions {read, write, exec, attr};
 export interface Mode {
     description(c_: Context, cb_: ValFunc<string>): void;
     check(c_: Context, owner: User, action: ModeActions, cb_: VoidFunc, fl_: ErrFunc): void;

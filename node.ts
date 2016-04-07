@@ -20,6 +20,10 @@ export class BaseNode implements Node {
         this._mode.check(context, this._owner, ModeActions.exec, callback, fail);
     }
 
+    protected _attr(context: Context, callback: VoidFunc, fail: ErrFunc) {
+        this._mode.check(context, this._owner, ModeActions.attr, callback, fail);
+    }
+
     getattr(
         context: Context,
         callback: (mode: Mode, owner: User) => void, fail: ErrFunc
@@ -33,7 +37,7 @@ export class BaseNode implements Node {
         context: Context, mode: Mode,
         callback: VoidFunc, fail: ErrFunc
     ): void {
-        this._write(context, (): void => {
+        this._attr(context, (): void => {
             this._mode = mode;
         }, fail);
     }
@@ -42,7 +46,7 @@ export class BaseNode implements Node {
         context: Context, owner: User,
         callback: VoidFunc, fail: ErrFunc
     ): void {
-        this._write(context, (): void => {
+        this._attr(context, (): void => {
             this._owner = owner;
         }, fail);
     }

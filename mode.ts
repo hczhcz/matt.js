@@ -23,7 +23,8 @@ export class UnixMode implements Mode {
             const mask = action === ModeActions.read ? 4
                        : action === ModeActions.write ? 2
                        : action === ModeActions.exec ? 1
-                       : 0; // never reach
+                       : action === ModeActions.attr && distance === 0 ? 0 // always ok
+                       : 255; // always deny
 
             if ((mode & mask) === mask) {
                 callback();
