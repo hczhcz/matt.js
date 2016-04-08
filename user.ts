@@ -1,6 +1,6 @@
 'use strict';
 
-import {ValFunc} from './util';
+import {VoidFunc, ValFunc} from './util';
 import {Context, User} from './interface';
 
 export class UnixUser implements User {
@@ -22,27 +22,35 @@ export class UnixUser implements User {
 
     distance(context: Context, callback: ValFunc<number>): void {
         context.user((user: User): void => {
-            user.superuser(context, (superuser: boolean): void => {
-                if (superuser) {
-                    callback(0);
-                } else {
-                    user.name(context, (name: string): void => {
-                        if (name === this._name) {
-                            callback(0);
-                        } else if (user.group !== undefined) {
-                            user.group(context, (group: string): void => {
-                                if (group === this._group) {
-                                    callback(1);
-                                } else {
-                                    callback(Infinity);
-                                }
-                            });
-                        } else {
-                            callback(Infinity);
-                        }
-                    });
-                }
-            });
+            const nonsuper: VoidFunc = (): void => {
+                user.name(context, (name: string): void => {
+                    if (name === this._name) {
+                        callback(0);
+                    } else if (user.group !== undefined) {
+                        user.group(context, (group: string): void => {
+                            if (group === this._group) {
+                                callback(1);
+                            } else {
+                                callback(Infinity);
+                            }
+                        });
+                    } else {
+                        callback(Infinity);
+                    }
+                });
+            }
+
+            if (user.superuser !== undefined) {
+                user.superuser(context, (superuser: boolean): void => {
+                    if (superuser) {
+                        callback(0);
+                    } else {
+                        nonsuper();
+                    }
+                });
+            } else {
+                nonsuper();
+            }
         });
     }
 };
