@@ -4,6 +4,7 @@ import {ErrFunc, VoidFunc, ValFunc} from './util';
 
 export interface Context {
     user(cb_: ValFunc<User>): void;
+    process(cb_: ValFunc<Process>): void;
     root(cb_: ValFunc<Node>): void;
 };
 
@@ -16,7 +17,14 @@ export interface User {
     superuser?(c_: Context, cb_: ValFunc<boolean>): void;
 };
 
-export enum ModeActions {read, write, exec, attr};
+export interface Process {
+    parent(c_: Context, cb_: ValFunc<Process | void>): void;
+    owner(c_: Context, cb_: ValFunc<User>): void;
+    name(c_: Context, cb_: ValFunc<string>): void;
+    args(c_: Context, cb_: ValFunc<string[]>): void;
+};
+
+export const enum ModeActions {read, write, exec, attr};
 export interface Mode {
     description(c_: Context, cb_: ValFunc<string>): void;
     check(c_: Context, owner: User, action: ModeActions, cb_: VoidFunc, fl_: ErrFunc): void;
