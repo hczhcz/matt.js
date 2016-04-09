@@ -177,31 +177,31 @@ export class LinkNode extends BaseNode {
 
 // export class FileNode extends BaseNode {};
 
-export class JsonNode extends BaseNode {
-    private _json: string; // mutable
+// export class JsonNode extends BaseNode {
+//     private _json: string; // mutable
 
-    constructor(mode: Mode, owner: User, json: JSON) {
-        super(mode, owner);
+//     constructor(mode: Mode, owner: User, json: JSON) {
+//         super(mode, owner);
 
-        this._json = JSON.stringify(json);
-    }
+//         this._json = JSON.stringify(json);
+//     }
 
-    readjson(
-        context: Context,
-        callback: ValFunc<JSON>, fail: ErrFunc
-    ): void {
-        this._read(context, (): void => {
-            callback(JSON.parse(this._json));
-        }, fail);
-    }
+//     readjson(
+//         context: Context,
+//         callback: ValFunc<JSON>, fail: ErrFunc
+//     ): void {
+//         this._read(context, (): void => {
+//             callback(JSON.parse(this._json));
+//         }, fail);
+//     }
 
-    writejson(
-        context: Context, json: JSON,
-        callback: VoidFunc, fail: ErrFunc
-    ): void {
-        this._write(context, (): void => {
-            this._json = JSON.stringify(json);
-            callback();
-        }, fail);
-    }
-};
+//     writejson(
+//         context: Context, json: JSON,
+//         callback: VoidFunc, fail: ErrFunc
+//     ): void {
+//         this._write(context, (): void => {
+//             this._json = JSON.stringify(json);
+//             callback();
+//         }, fail);
+//     }
+// };

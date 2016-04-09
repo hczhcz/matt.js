@@ -51,6 +51,6 @@ export interface Node {
     // write?(c_: Context, , cb_: VoidFunc, fl_: ErrFunc): void;
 
     // json
-    readjson? (c_: Context, cb_: ValFunc<JSON>, fl_: ErrFunc): void;
-    writejson?(c_: Context, json: JSON, cb_: VoidFunc, fl_: ErrFunc): void;
+    // readjson? (c_: Context, cb_: ValFunc<JSON>, fl_: ErrFunc): void;
+    // writejson?(c_: Context, json: JSON, cb_: VoidFunc, fl_: ErrFunc): void;
 };
