@@ -3,6 +3,16 @@
 import {VoidFunc, ValFunc} from './util';
 import {Context, User} from './interface';
 
+export class NoUser implements User {
+    name(context: Context, callback: ValFunc<string>): void {
+        callback('nobody');
+    }
+
+    distance(context: Context, callback: ValFunc<number>): void {
+        callback(0);
+    }
+};
+
 export class UnixUser implements User {
     constructor(private _group: string, private _name: string) {
         //
