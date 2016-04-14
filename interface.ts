@@ -3,9 +3,15 @@
 import {ErrFunc, VoidFunc, ValFunc} from './util';
 
 export interface Context {
+    parent(cb_: ValFunc<Context>): void;
+    args(cb_: ValFunc<string[]>): void;
+
     user(cb_: ValFunc<User>): void;
-    process(cb_: ValFunc<Process>): void;
     root(cb_: ValFunc<Node>): void;
+    dir(cb_: ValFunc<Node>): void;
+    setuser(user: User, cb_: VoidFunc, fl_: ErrFunc): void;
+    chroot(node: Node, cb_: VoidFunc): void;
+    chdir(node: Node, cb_: VoidFunc): void;
 };
 
 export interface User {
@@ -13,13 +19,6 @@ export interface User {
     name(c_: Context, cb_: ValFunc<string>): void;
     superuser(c_: Context, cb_: ValFunc<boolean>): void;
     distance(c_: Context, cb_: ValFunc<number>): void;
-};
-
-export interface Process {
-    parent(c_: Context, cb_: ValFunc<Process | void>): void;
-    owner(c_: Context, cb_: ValFunc<User>): void;
-    name(c_: Context, cb_: ValFunc<string>): void;
-    args(c_: Context, cb_: ValFunc<string[]>): void;
 };
 
 export const enum ModeActions {read, write, exec, attr};
