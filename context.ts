@@ -1,11 +1,11 @@
 'use strict';
 
-import {ErrFunc, VoidFunc, ValFunc} from './util';
+import {SimpleError, ErrFunc, VoidFunc, ValFunc} from './util';
 import {Context, User, Node} from './interface';
 
 export class PlainContext implements Context {
     constructor(
-        private _parent: Context,
+        private _parent: Context, // nullable
         private _args: string[],
         private _user: User,
         private _root: Node,
@@ -14,8 +14,12 @@ export class PlainContext implements Context {
         //
     }
 
-    parent(callback: ValFunc<Context>): void {
-        callback(this._parent);
+    parent(callback: ValFunc<Context>, fail: ErrFunc): void {
+        if (this._parent) {
+            callback(this._parent);
+        } else {
+            fail(new SimpleError('parent process not found'));
+        }
     }
 
     args(callback: ValFunc<string[]>): void {

@@ -3,7 +3,7 @@
 import {ErrFunc, VoidFunc, ValFunc} from './util';
 
 export interface Context {
-    parent(cb_: ValFunc<Context>): void;
+    parent(cb_: ValFunc<Context>, fl_: ErrFunc): void;
     args(cb_: ValFunc<string[]>): void;
 
     user(cb_: ValFunc<User>): void;
