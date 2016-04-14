@@ -3,7 +3,7 @@
 import {SimpleError, ErrFunc, VoidFunc, ValFunc} from './util';
 import {Context, User, ModeActions, Mode, Node} from './interface';
 
-export class BaseNode implements Node {
+class NodeBase {
     constructor(
         private _mode: Mode, // mutable
         private _owner: User // mutable
@@ -55,7 +55,7 @@ export class BaseNode implements Node {
     }
 };
 
-export class DirNode extends BaseNode {
+export class DirNode extends NodeBase implements Node {
     private static tag: string = 'ENTRY_';
     private _map: {[key: string]: Node}; // mutable
 
@@ -146,7 +146,7 @@ export class DirNode extends BaseNode {
     }
 };
 
-export class LinkNode extends BaseNode {
+export class LinkNode extends NodeBase implements Node {
     constructor(
         mode: Mode,
         owner: User,
@@ -175,9 +175,9 @@ export class LinkNode extends BaseNode {
     }
 };
 
-// export class FileNode extends BaseNode {};
+// export class FileNode extends NodeBase implements Node {};
 
-export class JsonNode extends BaseNode {
+export class JsonNode extends NodeBase implements Node {
     private _json: string; // mutable
 
     constructor(mode: Mode, owner: User, json: any) {
