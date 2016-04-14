@@ -17,7 +17,7 @@ export class NoUser implements User {
     }
 
     distance(context: Context, callback: ValFunc<number>): void {
-        callback(0);
+        callback(Infinity);
     }
 };
 

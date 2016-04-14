@@ -4,7 +4,11 @@ import {SimpleError, ErrFunc, VoidFunc, ValFunc} from './util';
 import {Context, User, ModeActions, Mode} from './interface';
 
 export class UnixMode implements Mode {
-    constructor(private _user: number, private _group: number, private _all: number) {
+    constructor(
+        private _user: number,
+        private _group: number,
+        private _all: number
+    ) {
         //
     }
 
