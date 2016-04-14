@@ -4,26 +4,26 @@ import {ErrFunc, VoidFunc, ValFunc} from './util';
 import {Context, User} from './interface';
 
 export class NoUser implements User {
-    group(context: Context, callback: ValFunc<string>): void {
+    group(context: Context, callback: ValFunc<string>, fail: ErrFunc): void {
         callback('nobody');
     }
 
-    name(context: Context, callback: ValFunc<string>): void {
+    name(context: Context, callback: ValFunc<string>, fail: ErrFunc): void {
         callback('nobody');
     }
 
-    superuser(context: Context, callback: ValFunc<boolean>): void {
+    superuser(context: Context, callback: ValFunc<boolean>, fail: ErrFunc): void {
         callback(false);
     }
 
-    distance(context: Context, callback: ValFunc<number>): void {
+    distance(context: Context, callback: ValFunc<number>, fail: ErrFunc): void {
         callback(Infinity);
     }
 };
 
 function userDistance(
     context: Context, owner: User,
-    callback: ValFunc<number>
+    callback: ValFunc<number>, fail: ErrFunc
 ) {
     context.user((user: User): void => {
         user.superuser(context, (superuser: boolean): void => {
@@ -42,13 +42,13 @@ function userDistance(
                                     } else {
                                         callback(Infinity);
                                     }
-                                });
-                            });
+                                }, fail);
+                            }, fail);
                         }
-                    });
-                });
+                    }, fail);
+                }, fail);
             }
-        });
+        }, fail);
     });
 }
 
@@ -57,37 +57,37 @@ export class UnixUser implements User {
         //
     }
 
-    group(context: Context, callback: ValFunc<string>): void {
+    group(context: Context, callback: ValFunc<string>, fail: ErrFunc): void {
         callback(this._group);
     }
 
-    name(context: Context, callback: ValFunc<string>): void {
+    name(context: Context, callback: ValFunc<string>, fail: ErrFunc): void {
         callback(this._name);
     }
 
-    superuser(context: Context, callback: ValFunc<boolean>): void {
+    superuser(context: Context, callback: ValFunc<boolean>, fail: ErrFunc): void {
         callback(false);
     }
 
-    distance(context: Context, callback: ValFunc<number>): void {
-        userDistance(context, this, callback);
+    distance(context: Context, callback: ValFunc<number>, fail: ErrFunc): void {
+        userDistance(context, this, callback, fail);
     }
 };
 
 export class UnixSuperUser implements User {
-    group(context: Context, callback: ValFunc<string>): void {
+    group(context: Context, callback: ValFunc<string>, fail: ErrFunc): void {
         callback('root');
     }
 
-    name(context: Context, callback: ValFunc<string>): void {
+    name(context: Context, callback: ValFunc<string>, fail: ErrFunc): void {
         callback('root');
     }
 
-    superuser(context: Context, callback: ValFunc<boolean>): void {
+    superuser(context: Context, callback: ValFunc<boolean>, fail: ErrFunc): void {
         callback(true);
     }
 
-    distance(context: Context, callback: ValFunc<number>): void {
-        userDistance(context, this, callback);
+    distance(context: Context, callback: ValFunc<number>, fail: ErrFunc): void {
+        userDistance(context, this, callback, fail);
     }
 };

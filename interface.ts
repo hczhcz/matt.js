@@ -15,15 +15,15 @@ export interface Context {
 };
 
 export interface User {
-    group(c_: Context, cb_: ValFunc<string>): void;
-    name(c_: Context, cb_: ValFunc<string>): void;
-    superuser(c_: Context, cb_: ValFunc<boolean>): void;
-    distance(c_: Context, cb_: ValFunc<number>): void;
+    group(c_: Context, cb_: ValFunc<string>, fl_: ErrFunc): void;
+    name(c_: Context, cb_: ValFunc<string>, fl_: ErrFunc): void;
+    superuser(c_: Context, cb_: ValFunc<boolean>, fl_: ErrFunc): void;
+    distance(c_: Context, cb_: ValFunc<number>, fl_: ErrFunc): void;
 };
 
 export const enum ModeActions {read, write, exec, attr};
 export interface Mode {
-    description(c_: Context, cb_: ValFunc<string>): void;
+    name(c_: Context, cb_: ValFunc<string>, fl_: ErrFunc): void;
     check(c_: Context, owner: User, action: ModeActions, cb_: VoidFunc, fl_: ErrFunc): void;
 };
 

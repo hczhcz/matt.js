@@ -12,7 +12,7 @@ export class UnixMode implements Mode {
         //
     }
 
-    description(context: Context, callback: ValFunc<string>): void {
+    name(context: Context, callback: ValFunc<string>, fail: ErrFunc): void {
         callback(String(this._user) + String(this._group) + String(this._all));
     }
 
@@ -35,6 +35,6 @@ export class UnixMode implements Mode {
             } else {
                 fail(new SimpleError('access denied'));
             }
-        });
+        }, fail);
     }
 };

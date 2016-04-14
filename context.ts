@@ -18,7 +18,7 @@ export class PlainContext implements Context {
         if (this._parent) {
             callback(this._parent);
         } else {
-            fail(new SimpleError('parent process not found'));
+            fail(new SimpleError('parent context not found'));
         }
     }
 
