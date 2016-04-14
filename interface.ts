@@ -3,13 +3,13 @@
 import {ErrFunc, VoidFunc, ValFunc} from './util';
 
 export interface Context {
-    parent(cb_: ValFunc<Context>, fl_: ErrFunc): void;
-    args(cb_: ValFunc<string[]>): void;
+    parent(cb_: ValFunc<Context>, fl_: ErrFunc): void; // TODO: should not get full access
 
     user(cb_: ValFunc<User>): void;
+    setuser(user: User, cb_: VoidFunc, fl_: ErrFunc): void;
+
     root(cb_: ValFunc<Node>): void;
     dir(cb_: ValFunc<Node>): void;
-    setuser(user: User, cb_: VoidFunc, fl_: ErrFunc): void;
     chroot(node: Node, cb_: VoidFunc): void;
     chdir(node: Node, cb_: VoidFunc): void;
 };

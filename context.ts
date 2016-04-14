@@ -6,7 +6,6 @@ import {Context, User, Node} from './interface';
 export class PlainContext implements Context {
     constructor(
         private _parent: Context, // nullable
-        private _args: string[],
         private _user: User,
         private _root: Node,
         private _dir: Node
@@ -20,10 +19,6 @@ export class PlainContext implements Context {
         } else {
             fail(new SimpleError('parent context not found'));
         }
-    }
-
-    args(callback: ValFunc<string[]>): void {
-        callback(this._args);
     }
 
     user(callback: ValFunc<User>): void {
