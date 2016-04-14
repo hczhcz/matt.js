@@ -43,10 +43,6 @@ export interface Node {
     readlink? (c_: Context, cb_: ValFunc<Node>, fl_: ErrFunc): void;
     writelink?(c_: Context, node: Node, cb_: VoidFunc, fl_: ErrFunc): void;
 
-    // file // TODO: stream io?
-    // read? (c_: Context, , cb_: VoidFunc, fl_: ErrFunc): void;
-    // write?(c_: Context, , cb_: VoidFunc, fl_: ErrFunc): void;
-
     // json
     readjson? (c_: Context, cb_: ValFunc<any>, fl_: ErrFunc): void;
     writejson?(c_: Context, json: any, cb_: VoidFunc, fl_: ErrFunc): void;

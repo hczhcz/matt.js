@@ -57,7 +57,7 @@ class NodeBase {
 
 export class DirNode extends NodeBase implements Node {
     private static tag: string = 'ENTRY_';
-    private _map: {[key: string]: Node}; // mutable
+    private _map: {[key: string]: Node} = {}; // mutable
 
     constructor(mode: Mode, owner: User, list: [string, Node][]) {
         super(mode, owner);
