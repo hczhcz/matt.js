@@ -1,6 +1,6 @@
 'use strict';
 
-import {VoidFunc, ValFunc} from './util';
+import {ErrFunc, VoidFunc, ValFunc} from './util';
 import {Context, User} from './interface';
 
 export class NoUser implements User {
@@ -21,6 +21,37 @@ export class NoUser implements User {
     }
 };
 
+function userDistance(
+    context: Context, owner: User,
+    callback: ValFunc<number>
+) {
+    context.user((user: User): void => {
+        user.superuser(context, (superuser: boolean): void => {
+            if (superuser) {
+                callback(0);
+            } else {
+                user.name(context, (userName: string): void => {
+                    owner.name(context, (ownerName: string): void => {
+                        if (userName === ownerName) {
+                            callback(0);
+                        } else {
+                            user.group(context, (userGroup: string): void => {
+                                owner.group(context, (ownerGroup: string): void => {
+                                    if (userGroup === ownerGroup) {
+                                        callback(1);
+                                    } else {
+                                        callback(Infinity);
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    });
+}
+
 export class UnixUser implements User {
     constructor(private _group: string, private _name: string) {
         //
@@ -39,32 +70,24 @@ export class UnixUser implements User {
     }
 
     distance(context: Context, callback: ValFunc<number>): void {
-        context.user((user: User): void => {
-            user.superuser(context, (superuser: boolean): void => {
-                if (superuser) {
-                    callback(0);
-                } else {
-                    user.name(context, (name: string): void => {
-                        if (name === this._name) {
-                            callback(0);
-                        } else {
-                            user.group(context, (group: string): void => {
-                                if (group === this._group) {
-                                    callback(1);
-                                } else {
-                                    callback(Infinity);
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        });
+        userDistance(context, this, callback);
     }
 };
 
-export class UnixSuperUser extends UnixUser {
+export class UnixSuperUser implements User {
+    group(context: Context, callback: ValFunc<string>): void {
+        callback('root');
+    }
+
+    name(context: Context, callback: ValFunc<string>): void {
+        callback('root');
+    }
+
     superuser(context: Context, callback: ValFunc<boolean>): void {
         callback(true);
+    }
+
+    distance(context: Context, callback: ValFunc<number>): void {
+        userDistance(context, this, callback);
     }
 };
