@@ -9,12 +9,10 @@ export interface Context {
 };
 
 export interface User {
+    group(c_: Context, cb_: ValFunc<string>): void;
     name(c_: Context, cb_: ValFunc<string>): void;
+    superuser(c_: Context, cb_: ValFunc<boolean>): void;
     distance(c_: Context, cb_: ValFunc<number>): void;
-
-    // unix
-    group?(c_: Context, cb_: ValFunc<string>): void;
-    superuser?(c_: Context, cb_: ValFunc<boolean>): void;
 };
 
 export interface Process {
