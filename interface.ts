@@ -2,9 +2,14 @@
 
 import {ErrFunc, VoidFunc, ValFunc} from './util';
 
-export interface Context {
-    parent(cb_: ValFunc<Context>, fl_: ErrFunc): void; // TODO: should not get full access
+export interface Process {
+    emit(signal: string, cb_: VoidFunc, fl_: ErrFunc): void;
 
+    parent(cb_: ValFunc<Process>, fl_: ErrFunc): void;
+    children(cb_: ValFunc<Process[]>, fl_: ErrFunc): void;
+};
+
+export interface Context extends Process {
     user(cb_: ValFunc<User>): void;
     setuser(user: User, cb_: VoidFunc, fl_: ErrFunc): void;
 
