@@ -5,8 +5,8 @@ import {Context, User, Node} from './interface';
 
 class ContextBase {
     constructor(
-        private _root: Node,
-        private _dir: Node
+        private _root: Node, // mutable
+        private _dir: Node // mutable
     ) {
         //
     }
@@ -33,7 +33,7 @@ class ContextBase {
 export class PlainContext extends ContextBase implements Context {
     constructor(
         private _parent: Context,
-        private _user: User,
+        private _user: User, // mutable // TODO: ?
         root: Node,
         dir: Node
     ) {
