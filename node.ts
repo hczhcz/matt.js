@@ -148,32 +148,39 @@ export class LinkNode extends NodeBase implements Node {
     constructor(
         mode: Mode,
         owner: User,
-        private _node: Node // mutable
+        private _path: string[] // mutable
     ) {
         super(mode, owner);
     }
 
     readlink(
         context: Context,
-        callback: ValFunc<Node>, fail: ErrFunc
+        callback: ValFunc<string[]>, fail: ErrFunc
     ): void {
         this._read(context, (): void => {
-            callback(this._node);
+            callback(this._path);
         }, fail);
     }
 
     writelink(
-        context: Context, node: Node,
+        context: Context, path: string[],
         callback: VoidFunc, fail: ErrFunc
     ): void {
         this._write(context, (): void => {
-            this._node = node;
+            this._path = path;
             callback();
         }, fail);
     }
-};
 
-// export class FileNode extends NodeBase implements Node {};
+    trace(
+        context: Context, path: string[],
+        callback: ValFunc<string[]>, fail: ErrFunc
+    ): void {
+        this._exec(context, (): void => {
+            callback(path.concat(this._path));
+        }, fail);
+    }
+};
 
 export class JsonNode extends NodeBase implements Node {
     private _json: string; // mutable

@@ -45,8 +45,9 @@ export interface Node {
     open?   (c_: Context, name: string, cb_: ValFunc<Node>, fl_: ErrFunc): void;
 
     // link
-    readlink? (c_: Context, cb_: ValFunc<Node>, fl_: ErrFunc): void;
-    writelink?(c_: Context, node: Node, cb_: VoidFunc, fl_: ErrFunc): void;
+    readlink? (c_: Context, cb_: ValFunc<string[]>, fl_: ErrFunc): void;
+    writelink?(c_: Context, path: string[], cb_: VoidFunc, fl_: ErrFunc): void;
+    trace?    (c_: Context, path: string[], cb_: ValFunc<string[]>, fl_: ErrFunc): void;
 
     // json
     readjson? (c_: Context, cb_: ValFunc<any>, fl_: ErrFunc): void;
