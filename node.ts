@@ -31,9 +31,7 @@ class NodeBase {
         context: Context,
         callback: (mode: Mode, owner: User) => void, fail: ErrFunc
     ): void {
-        this._read(context, (): void => {
-            callback(this._mode, this._owner);
-        }, fail);
+        callback(this._mode, this._owner);
     }
 
     chmod(
@@ -82,21 +80,6 @@ export class DirNode extends NodeBase implements Node {
         }, fail);
     }
 
-    open(
-        context: Context, name: string,
-        callback: ValFunc<Node>, fail: ErrFunc
-    ): void {
-        this._read(context, (): void => {
-            const result: Node = this._map[DirNode.tag + name];
-
-            if (result !== undefined) {
-                callback(result);
-            } else {
-                fail(new SimpleError('file not found'));
-            }
-        }, fail);
-    }
-
     link(
         context: Context, name: string, node: Node,
         callback: VoidFunc, fail: ErrFunc
@@ -115,14 +98,14 @@ export class DirNode extends NodeBase implements Node {
 
     unlink(
         context: Context, name: string,
-        callback: ValFunc<Node>, fail: ErrFunc
+        callback: VoidFunc, fail: ErrFunc
     ): void {
         this._write(context, (): void => {
             const result: Node = this._map[DirNode.tag + name];
 
             if (result !== undefined) {
                 delete this._map[DirNode.tag + name];
-                callback(result);
+                callback();
             } else {
                 fail(new SimpleError('file not found'));
             }
@@ -131,13 +114,28 @@ export class DirNode extends NodeBase implements Node {
 
     swap(
         context: Context, name: string, node: Node,
-        callback: ValFunc<Node>, fail: ErrFunc
+        callback: VoidFunc, fail: ErrFunc
     ): void {
         this._write(context, (): void => {
             const result: Node = this._map[DirNode.tag + name];
 
             if (result !== undefined) {
                 this._map[DirNode.tag + name] = node;
+                callback();
+            } else {
+                fail(new SimpleError('file not found'));
+            }
+        }, fail);
+    }
+
+    open(
+        context: Context, name: string,
+        callback: ValFunc<Node>, fail: ErrFunc
+    ): void {
+        this._exec(context, (): void => {
+            const result: Node = this._map[DirNode.tag + name];
+
+            if (result !== undefined) {
                 callback(result);
             } else {
                 fail(new SimpleError('file not found'));

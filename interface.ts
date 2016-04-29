@@ -39,10 +39,10 @@ export interface Node {
 
     // dir
     readdir?(c_: Context, cb_: ValFunc<string[]>, fl_: ErrFunc): void;
-    open?   (c_: Context, name: string, cb_: ValFunc<Node>, fl_: ErrFunc): void;
     link?   (c_: Context, name: string, node: Node, cb_: VoidFunc, fl_: ErrFunc): void;
-    unlink? (c_: Context, name: string, cb_: ValFunc<Node>, fl_: ErrFunc): void;
-    swap?   (c_: Context, name: string, node: Node, cb_: ValFunc<Node>, fl_: ErrFunc): void;
+    unlink? (c_: Context, name: string, cb_: VoidFunc, fl_: ErrFunc): void;
+    swap?   (c_: Context, name: string, node: Node, cb_: VoidFunc, fl_: ErrFunc): void;
+    open?   (c_: Context, name: string, cb_: ValFunc<Node>, fl_: ErrFunc): void;
 
     // link
     readlink? (c_: Context, cb_: ValFunc<Node>, fl_: ErrFunc): void;
