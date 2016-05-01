@@ -49,7 +49,7 @@ export interface Node {
     writelink?(c_: Context, path: string[], cb_: VoidFunc, fl_: ErrFunc): void;
     trace?    (c_: Context, path: string[], cb_: ValFunc<string[]>, fl_: ErrFunc): void;
 
-    // json
-    readjson? (c_: Context, cb_: ValFunc<any>, fl_: ErrFunc): void;
-    writejson?(c_: Context, json: any, cb_: VoidFunc, fl_: ErrFunc): void;
+    // obj
+    readobj? (c_: Context, cb_: ValFunc<any>, fl_: ErrFunc): void;
+    writeobj?(c_: Context, obj: any, cb_: VoidFunc, fl_: ErrFunc): void;
 };

@@ -182,16 +182,45 @@ export class LinkNode extends NodeBase implements Node {
     }
 };
 
-export class JsonNode extends NodeBase implements Node {
-    private _json: string; // mutable
+export class FreeObjNode extends NodeBase implements Node {
+    private _obj: any; // mutable
 
-    constructor(mode: Mode, owner: User, json: any) {
+    constructor(mode: Mode, owner: User, obj: any) {
         super(mode, owner);
 
-        this._json = JSON.stringify(json);
+        this._obj = obj;
     }
 
-    readjson(
+    readobj(
+        context: Context,
+        callback: ValFunc<any>, fail: ErrFunc
+    ): void {
+        this._read(context, (): void => {
+            callback(this._obj);
+        }, fail);
+    }
+
+    writeobj(
+        context: Context, obj: any,
+        callback: VoidFunc, fail: ErrFunc
+    ): void {
+        this._write(context, (): void => {
+            this._obj = obj;
+            callback();
+        }, fail);
+    }
+};
+
+export class JsonObjNode extends NodeBase implements Node {
+    private _json: string; // mutable
+
+    constructor(mode: Mode, owner: User, obj: any) {
+        super(mode, owner);
+
+        this._json = JSON.stringify(obj);
+    }
+
+    readobj(
         context: Context,
         callback: ValFunc<any>, fail: ErrFunc
     ): void {
@@ -200,12 +229,12 @@ export class JsonNode extends NodeBase implements Node {
         }, fail);
     }
 
-    writejson(
-        context: Context, json: any,
+    writeobj(
+        context: Context, obj: any,
         callback: VoidFunc, fail: ErrFunc
     ): void {
         this._write(context, (): void => {
-            this._json = JSON.stringify(json);
+            this._json = JSON.stringify(obj);
             callback();
         }, fail);
     }
