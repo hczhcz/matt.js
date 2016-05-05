@@ -243,3 +243,38 @@ export class JsonObjNode extends NodeBase implements Node {
         }, fail);
     }
 };
+
+export class FuncObjNode extends NodeBase implements Node {
+    constructor(
+        mode: Mode,
+        owner: User,
+        private _readhook: (
+            context: Context,
+            callback: ValFunc<any>, fail: ErrFunc
+        ) => void,
+        private _writehook: (
+            context: Context, obj: any,
+            callback: VoidFunc, fail: ErrFunc
+        ) => void
+    ) {
+        super(mode, owner);
+    }
+
+    readobj(
+        context: Context,
+        callback: ValFunc<any>, fail: ErrFunc
+    ): void {
+        this._read(context, (): void => {
+            this._readhook(context, callback, fail);
+        }, fail);
+    }
+
+    writeobj(
+        context: Context, obj: any,
+        callback: VoidFunc, fail: ErrFunc
+    ): void {
+        this._write(context, (): void => {
+            this._writehook(context, obj, callback, fail)
+        }, fail);
+    }
+};
