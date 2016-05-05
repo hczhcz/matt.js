@@ -40,9 +40,9 @@ export class PlainContext extends ContextBase implements Context {
         super(root, dir);
     }
 
-    parent(callback: ValFunc<Context>, fail: ErrFunc): void {
-        callback(this._parent);
-    }
+    // parent(callback: ValFunc<Context>, fail: ErrFunc): void {
+    //     callback(this._parent);
+    // }
 
     user(callback: ValFunc<User>): void {
         callback(this._user);
@@ -62,9 +62,9 @@ export class RootContext extends ContextBase implements Context {
         super(root, dir);
     }
 
-    parent(callback: ValFunc<Context>, fail: ErrFunc): void {
-        fail(new SimpleError('parent context not exist'));
-    }
+    // parent(callback: ValFunc<Context>, fail: ErrFunc): void {
+    //     fail(new SimpleError('parent context not exist'));
+    // }
 
     user(callback: ValFunc<User>): void {
         callback(this._user);
