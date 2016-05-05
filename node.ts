@@ -57,7 +57,11 @@ export class DirNode extends NodeBase implements Node {
     private static tag: string = 'ENTRY_';
     private _map: {[key: string]: Node} = {}; // mutable
 
-    constructor(mode: Mode, owner: User, list: [string, Node][]) {
+    constructor(
+        mode: Mode,
+        owner: User,
+        list: [string, Node][]
+    ) {
         super(mode, owner);
 
         for (const pair of list) {
@@ -183,12 +187,12 @@ export class LinkNode extends NodeBase implements Node {
 };
 
 export class FreeObjNode extends NodeBase implements Node {
-    private _obj: any; // mutable
-
-    constructor(mode: Mode, owner: User, obj: any) {
+    constructor(
+        mode: Mode,
+        owner: User,
+        private _obj: any // mutable
+    ) {
         super(mode, owner);
-
-        this._obj = obj;
     }
 
     readobj(
