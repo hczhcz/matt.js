@@ -1,6 +1,6 @@
 'use strict';
 
-import {ErrFunc, VoidFunc, ValFunc} from './util';
+import {ErrFunc, ValFunc} from './util';
 import {Context, User} from './interface';
 
 export class NoUser implements User {
