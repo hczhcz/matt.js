@@ -248,14 +248,8 @@ export class FuncObjNode extends NodeBase implements Node {
     constructor(
         mode: Mode,
         owner: User,
-        private _readhook: (
-            context: Context,
-            callback: ValFunc<any>, fail: ErrFunc
-        ) => void,
-        private _writehook: (
-            context: Context, obj: any,
-            callback: VoidFunc, fail: ErrFunc
-        ) => void
+        private _readhook: (callback: ValFunc<any>, fail: ErrFunc) => void,
+        private _writehook: (obj: any, callback: VoidFunc, fail: ErrFunc) => void
     ) {
         super(mode, owner);
     }
@@ -265,7 +259,7 @@ export class FuncObjNode extends NodeBase implements Node {
         callback: ValFunc<any>, fail: ErrFunc
     ): void {
         this._read(context, (): void => {
-            this._readhook(context, callback, fail);
+            this._readhook(callback, fail);
         }, fail);
     }
 
@@ -274,7 +268,7 @@ export class FuncObjNode extends NodeBase implements Node {
         callback: VoidFunc, fail: ErrFunc
     ): void {
         this._write(context, (): void => {
-            this._writehook(context, obj, callback, fail)
+            this._writehook(obj, callback, fail);
         }, fail);
     }
 };
