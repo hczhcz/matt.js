@@ -150,7 +150,7 @@ export class DirNode extends NodeBase implements Node {
     }
 };
 
-export class LinkNode extends NodeBase implements Node {
+export class RelLinkNode extends NodeBase implements Node {
     constructor(
         mode: Mode,
         owner: User,
@@ -184,6 +184,44 @@ export class LinkNode extends NodeBase implements Node {
     ): void {
         this._exec(context, (): void => {
             callback(path.concat(this._path));
+        }, fail);
+    }
+};
+
+export class AbsLinkNode extends NodeBase implements Node {
+    constructor(
+        mode: Mode,
+        owner: User,
+        private _path: string[] // mutable
+    ) {
+        super(mode, owner);
+    }
+
+    readlink(
+        context: Context,
+        callback: ValFunc<string[]>, fail: ErrFunc
+    ): void {
+        this._read(context, (): void => {
+            callback(this._path);
+        }, fail);
+    }
+
+    writelink(
+        context: Context, path: string[],
+        callback: VoidFunc, fail: ErrFunc
+    ): void {
+        this._write(context, (): void => {
+            this._path = path;
+            callback();
+        }, fail);
+    }
+
+    trace(
+        context: Context, path: string[],
+        callback: ValFunc<string[]>, fail: ErrFunc
+    ): void {
+        this._exec(context, (): void => {
+            callback(this._path);
         }, fail);
     }
 };
