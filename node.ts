@@ -40,6 +40,7 @@ class NodeBase {
     ): void {
         this._attr(context, (): void => {
             this._mode = mode;
+            callback();
         }, fail);
     }
 
@@ -49,6 +50,7 @@ class NodeBase {
     ): void {
         this._attr(context, (): void => {
             this._owner = owner;
+            callback();
         }, fail);
     }
 };
