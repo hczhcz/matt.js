@@ -57,4 +57,4 @@ function makeRoot(password: string): Node {
     ]);
 }
 
-makeRoot('test');
+console.log(makeRoot('test'));
