@@ -40,7 +40,7 @@ export class PlainContext implements Context {
     }
 
     chroot(node: Node, callback: VoidFunc, fail: ErrFunc): void {
-        if (this._proc.open) {
+        if (this._proc.swap) {
             this._proc.swap(this, 'root', node, callback, fail);
         } else {
             fail(new SimpleError('???')); // TODO
@@ -48,7 +48,7 @@ export class PlainContext implements Context {
     }
 
     chdir(node: Node, callback: VoidFunc, fail: ErrFunc): void {
-        if (this._proc.open) {
+        if (this._proc.swap) {
             this._proc.swap(this, 'dir', node, callback, fail);
         } else {
             fail(new SimpleError('???')); // TODO
