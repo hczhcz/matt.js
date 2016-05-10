@@ -3,66 +3,42 @@
 import {ErrFunc, VoidFunc, ValFunc} from './util';
 import {Context, User, Node} from './interface';
 
-class ContextBase {
+export class PlainContext implements Context {
     constructor(
-        private _root: Node, // mutable
-        private _dir: Node // mutable
+        private _proc: Node,
+        private _user: User // mutable
     ) {
         //
     }
 
+    proc(callback: ValFunc<Node>): void {
+        callback(this._proc);
+    }
+
+    user(callback: ValFunc<User>): void {
+        callback(this._user);
+    }
+
+    setuser(user: User, callback: VoidFunc, fail: ErrFunc): void {
+        //
+    }
+
     root(callback: ValFunc<Node>): void {
-        callback(this._root);
+        callback(this._root); // TODO
     }
 
     dir(callback: ValFunc<Node>): void {
-        callback(this._dir);
+        callback(this._dir); // TODO
     }
 
     chroot(node: Node, callback: VoidFunc): void {
-        this._root = node;
+        this._root = node; // TODO
         callback();
     }
 
     chdir(node: Node, callback: VoidFunc): void {
-        this._dir = node;
+        this._dir = node; // TODO
         callback();
     }
-};
 
-export class PlainContext extends ContextBase implements Context {
-    constructor(
-        private _parent: Context,
-        private _user: User, // mutable // TODO: ?
-        root: Node,
-        dir: Node
-    ) {
-        super(root, dir);
-    }
-
-    user(callback: ValFunc<User>): void {
-        callback(this._user);
-    }
-
-    setuser(user: User, callback: VoidFunc, fail: ErrFunc): void {
-        this._parent.setuser(user, callback, fail);
-    }
-};
-
-export class RootContext extends ContextBase implements Context {
-    constructor(
-        private _user: User,
-        root: Node,
-        dir: Node
-    ) {
-        super(root, dir);
-    }
-
-    user(callback: ValFunc<User>): void {
-        callback(this._user);
-    }
-
-    setuser(user: User, callback: VoidFunc, fail: ErrFunc): void {
-        // TODO
-    }
 };

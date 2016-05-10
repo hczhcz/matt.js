@@ -3,6 +3,7 @@
 import {ErrFunc, VoidFunc, ValFunc} from './util';
 
 export interface Context {
+    proc(cb_: ValFunc<Node>): void;
     user(cb_: ValFunc<User>): void;
     setuser(user: User, cb_: VoidFunc, fl_: ErrFunc): void;
 
