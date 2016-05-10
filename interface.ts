@@ -3,14 +3,14 @@
 import {ErrFunc, VoidFunc, ValFunc} from './util';
 
 export interface Context {
-    proc(cb_: ValFunc<Node>): void;
-    user(cb_: ValFunc<User>): void;
+    proc(cb_: ValFunc<Node>/* , fl_: ErrFunc */): void;
+    user(cb_: ValFunc<User>/* , fl_: ErrFunc */): void;
     setuser(user: User, cb_: VoidFunc, fl_: ErrFunc): void;
 
-    root(cb_: ValFunc<Node>): void;
-    dir(cb_: ValFunc<Node>): void;
-    chroot(node: Node, cb_: VoidFunc): void;
-    chdir(node: Node, cb_: VoidFunc): void;
+    root(cb_: ValFunc<Node>, fl_: ErrFunc): void;
+    dir(cb_: ValFunc<Node>, fl_: ErrFunc): void;
+    chroot(node: Node, cb_: VoidFunc, fl_: ErrFunc): void;
+    chdir(node: Node, cb_: VoidFunc, fl_: ErrFunc): void;
 };
 
 export interface User {
