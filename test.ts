@@ -10,12 +10,12 @@ function makeSysDir(list: [string, Node][]): Node {
     return new DirNode(new UnixMode(7, 5, 5), new UnixSuperUser(), list);
 }
 
-function makeUserDir(group: string, name: string): Node {
-    return new DirNode(new UnixMode(7, 5, 5), new UnixUser(group, name), []);
+function makeUserDir(group: string, name: string, list: [string, Node][]): Node {
+    return new DirNode(new UnixMode(7, 5, 5), new UnixUser(group, name), list);
 }
 
-function makeSuperUserDir(): Node {
-    return new DirNode(new UnixMode(7, 0, 0), new UnixSuperUser(), []);
+function makeSuperUserDir(list: [string, Node][]): Node {
+    return new DirNode(new UnixMode(7, 0, 0), new UnixSuperUser(), list);
 }
 
 function makeAuth(user: User, password: string): Node {
@@ -39,12 +39,13 @@ function makeSuperUserAuth(password: string): Node {
     return makeAuth(new UnixSuperUser(), password);
 }
 
-function makeUserHome(group: string, name: string): Node {
-    return new DirNode(new UnixMode(7, 5, 5), new UnixUser(group, name), []);
-}
-
-function makeSuperUserHome(): Node {
-    return new DirNode(new UnixMode(7, 0, 0), new UnixSuperUser(), []);
+function makeProc(): Node {
+    // return makeUserDir([
+    //     ['parent', ],
+    //     ['root', ],
+    //     ['dir', ],
+    //     ['export', makeUserDir()],
+    // ]);
 }
 
 function makeRoot(password: string): Node {
@@ -55,7 +56,7 @@ function makeRoot(password: string): Node {
         ['bin', makeSysDir([])],
         ['dev', makeSysDir([])],
         ['home', makeSysDir([
-            ['root', makeSuperUserDir()],
+            ['root', makeSuperUserDir([])],
         ])],
         ['proc', makeSysDir([])],
     ]);
