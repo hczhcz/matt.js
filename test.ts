@@ -6,12 +6,16 @@ import {UnixUser, UnixSuperUser} from './user'
 import {UnixMode} from './mode';
 import {DirNode, FuncObjNode} from './node';
 
-function makeRootDir(list: [string, Node][]): Node {
+function makeSysDir(list: [string, Node][]): Node {
     return new DirNode(new UnixMode(7, 5, 5), new UnixSuperUser(), list);
 }
 
-function makeSysDir(list: [string, Node][]): Node {
-    return new DirNode(new UnixMode(5, 5, 5), new UnixSuperUser(), list);
+function makeUserDir(group: string, name: string): Node {
+    return new DirNode(new UnixMode(7, 5, 5), new UnixUser(group, name), []);
+}
+
+function makeSuperUserDir(): Node {
+    return new DirNode(new UnixMode(7, 0, 0), new UnixSuperUser(), []);
 }
 
 function makeAuth(user: User, password: string): Node {
@@ -44,14 +48,14 @@ function makeSuperUserHome(): Node {
 }
 
 function makeRoot(password: string): Node {
-    return makeRootDir([
-        ['auth', makeRootDir([
+    return makeSysDir([
+        ['auth', makeSysDir([
             ['root', makeSuperUserAuth(password)],
         ])],
-        ['bin', makeRootDir([])],
+        ['bin', makeSysDir([])],
         ['dev', makeSysDir([])],
-        ['home', makeRootDir([
-            ['root', makeSuperUserHome()],
+        ['home', makeSysDir([
+            ['root', makeSuperUserDir()],
         ])],
         ['proc', makeSysDir([])],
     ]);
