@@ -10,8 +10,8 @@ function makeSysDir(list: [string, Node][]): Node {
     return new DirNode(new UnixMode(7, 5, 5), new UnixSuperUser(), list);
 }
 
-function makeUserDir(group: string, name: string, list: [string, Node][]): Node {
-    return new DirNode(new UnixMode(7, 5, 5), new UnixUser(group, name), list);
+function makeUserDir(user: User, list: [string, Node][]): Node {
+    return new DirNode(new UnixMode(7, 5, 5), user, list);
 }
 
 function makeSuperUserDir(list: [string, Node][]): Node {
@@ -23,7 +23,7 @@ function makeAuth(user: User, password: string): Node {
         new UnixMode(4, 4, 4),
         user,
         (callback: ValFunc<any>, fail: ErrFunc): void => {
-            callback(user); // TODO: ask password?
+            callback(user); // TODO: ask password
         },
         (obj: any, callback: VoidFunc, fail: ErrFunc): void => {
             fail(new SimpleError('not writable'));
