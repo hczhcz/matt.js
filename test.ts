@@ -1,7 +1,7 @@
 'use strict';
 
 import {SimpleError, ErrFunc, VoidFunc, ValFunc} from './util';
-import {User, Node} from './interface';
+import {Context, User, Node} from './interface';
 import {UnixUser, UnixSuperUser} from './user'
 import {UnixMode} from './mode';
 import {DirNode, FuncObjNode} from './node';
@@ -22,10 +22,10 @@ function makeAuth(user: User, password: string): Node {
     return new FuncObjNode(
         new UnixMode(4, 4, 4),
         user,
-        (callback: ValFunc<any>, fail: ErrFunc): void => {
+        (context: Context, callback: ValFunc<any>, fail: ErrFunc): void => {
             callback(user); // TODO: ask password
         },
-        (obj: any, callback: VoidFunc, fail: ErrFunc): void => {
+        (context: Context, obj: any, callback: VoidFunc, fail: ErrFunc): void => {
             fail(new SimpleError('not writable'));
         }
     );
@@ -39,9 +39,9 @@ function makeSuperUserAuth(password: string): Node {
     return makeAuth(new UnixSuperUser(), password);
 }
 
-function makeProc(): Node {
+function makeProc(parent: Node): Node {
     // return makeUserDir([
-    //     ['parent', ],
+    //     ['parent', parent],
     //     ['root', ],
     //     ['dir', ],
     //     ['export', makeUserDir()],
