@@ -226,35 +226,6 @@ export class AbsLinkNode extends NodeBase implements Node {
     }
 };
 
-export class FreeObjNode extends NodeBase implements Node {
-    constructor(
-        mode: Mode,
-        owner: User,
-        private _obj: any // mutable
-    ) {
-        super(mode, owner);
-    }
-
-    readobj(
-        context: Context,
-        callback: ValFunc<any>, fail: ErrFunc
-    ): void {
-        this._read(context, (): void => {
-            callback(this._obj);
-        }, fail);
-    }
-
-    writeobj(
-        context: Context, obj: any,
-        callback: VoidFunc, fail: ErrFunc
-    ): void {
-        this._write(context, (): void => {
-            this._obj = obj;
-            callback();
-        }, fail);
-    }
-};
-
 export class JsonObjNode extends NodeBase implements Node {
     private _json: string; // mutable
 
