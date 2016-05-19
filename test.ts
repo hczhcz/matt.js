@@ -6,8 +6,10 @@ import {UnixUser, UnixSuperUser} from './user'
 import {UnixMode} from './mode';
 import {DirNode, FuncObjNode} from './node';
 
+const superUser = new UnixSuperUser();
+
 function makeSysDir(list: [string, Node][]): Node {
-    return new DirNode(new UnixMode(7, 5, 5), new UnixSuperUser(), list);
+    return new DirNode(new UnixMode(7, 5, 5), superUser, list);
 }
 
 function makeUserDir(user: User, list: [string, Node][]): Node {
@@ -15,7 +17,7 @@ function makeUserDir(user: User, list: [string, Node][]): Node {
 }
 
 function makeSuperUserDir(list: [string, Node][]): Node {
-    return new DirNode(new UnixMode(7, 0, 0), new UnixSuperUser(), list);
+    return new DirNode(new UnixMode(7, 0, 0), superUser, list);
 }
 
 function makeAuth(user: User, password: string): Node {
@@ -36,16 +38,23 @@ function makeUserAuth(group: string, name: string, password: string): Node {
 }
 
 function makeSuperUserAuth(password: string): Node {
-    return makeAuth(new UnixSuperUser(), password);
+    return makeAuth(superUser, password);
 }
 
-function makeProc(parent: Node): Node {
-    // return makeUserDir([
-    //     ['parent', parent],
-    //     ['root', ],
-    //     ['dir', ],
-    //     ['export', makeUserDir()],
-    // ]);
+function makeProc(
+    user: User,
+    parent: Node,
+    root: Node, dir: Node,
+    env: [string, Node][],
+    func: [string, Node][]
+): Node {
+    return makeUserDir(user, [
+        ['parent', parent],
+        ['root', root],
+        ['dir', dir],
+        ['env', makeUserDir(user, env)], // env: stdin, stdout, stderr
+        ['func', makeUserDir(user, func)], // func: main, signal
+    ]);
 }
 
 function makeRoot(password: string): Node {
