@@ -19,8 +19,9 @@ export class PlainContext implements Context {
         callback(this._user);
     }
 
-    setuser(user: User, callback: VoidFunc, fail: ErrFunc): void {
-        //
+    setuser(user: User, callback: VoidFunc): void {
+        this._user = user;
+        callback();
     }
 
     root(callback: ValFunc<Node>, fail: ErrFunc): void {

@@ -25,7 +25,12 @@ function makeAuth(user: User, password: string): Node {
         new UnixMode(4, 4, 4),
         user,
         (context: Context, callback: ValFunc<any>, fail: ErrFunc): void => {
-            callback(user); // TODO: ask password
+            if (true) { // TODO: ask password
+                // context.setuser // ...
+                callback(true);
+            } else {
+                callback(false);
+            }
         },
         (context: Context, obj: any, callback: VoidFunc, fail: ErrFunc): void => {
             fail(new SimpleError('not writable'));
