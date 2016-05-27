@@ -25,12 +25,10 @@ function makeAuth(user: User, password: string): Node {
         new UnixMode(4, 4, 4),
         user,
         (context: Context, callback: ValFunc<any>, fail: ErrFunc): void => {
-            if (true) { // TODO: ask password
-                // context.setuser // ...
+            // TODO: ask password
+            context.setuser(user, (): void => {
                 callback(true);
-            } else {
-                callback(false);
-            }
+            });
         },
         (context: Context, obj: any, callback: VoidFunc, fail: ErrFunc): void => {
             fail(new SimpleError('not writable'));
@@ -53,7 +51,7 @@ function makeProc(
     env: [string, Node][],
     func: [string, Node][]
 ): Node {
-    return makeUserDir(user, [
+    return makeSysDir([
         ['parent', parent],
         ['root', root],
         ['dir', dir],
