@@ -63,8 +63,9 @@ function makeProc(
 function boot(
     password: string,
     env: [string, Node][], func: [string, Node][],
-    callback: (context: Context, root: Node) => void, fail: ErrFunc
+    callback: ValFunc<Context>, fail: ErrFunc
 ): void {
+    // create root dir structure
     const root: Node = makeSysDir([
         ['auth', makeSysDir([
             ['root', makeSuperUserAuth(password)],
@@ -77,6 +78,7 @@ function boot(
         ['proc', makeSysDir([])],
     ]);
 
+    // create proc 0
     const proc = makeSysDir([
         ['root', root],
         ['dir', root],
@@ -86,11 +88,12 @@ function boot(
 
     const context = new PlainContext(proc, superUser);
 
+    // mount proc 0
     // assert(dir.open);
     root.open(context, 'proc', (node: Node): void => {
         // assert(node.link);
         node.link(context, '0', proc, (): void => {
-            callback(context, root);
+            callback(context);
         }, fail);
     }, fail);
 }
@@ -98,9 +101,8 @@ function boot(
 boot(
     'test',
     [], [],
-    (context: Context, root: Node): void => {
+    (context: Context): void => {
         console.log(context);
-        console.log(root);
     },
     (err: Error): void => {
         console.log(err);
