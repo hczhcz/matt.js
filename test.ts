@@ -2,6 +2,7 @@
 
 import {SimpleError, ErrFunc, VoidFunc, ValFunc} from './util';
 import {Context, User, Node} from './interface';
+import {PlainContext} from './context';
 import {UnixUser, UnixSuperUser} from './user'
 import {UnixMode} from './mode';
 import {DirNode, FuncObjNode} from './node';
@@ -59,8 +60,12 @@ function makeProc(
     ]);
 }
 
-function makeRoot(password: string): Node {
-    return makeSysDir([
+function boot(
+    password: string,
+    env: [string, Node][], func: [string, Node][],
+    callback: (context: Context, root: Node) => void, fail: ErrFunc
+): void {
+    const root: Node = makeSysDir([
         ['auth', makeSysDir([
             ['root', makeSuperUserAuth(password)],
         ])],
@@ -71,6 +76,33 @@ function makeRoot(password: string): Node {
         ])],
         ['proc', makeSysDir([])],
     ]);
+
+    const proc = makeSysDir([
+        ['root', root],
+        ['dir', root],
+        ['env', makeUserDir(superUser, env)], // env: stdin, stdout, stderr
+        ['func', makeUserDir(superUser, func)], // func: main, signal
+    ]);
+
+    const context = new PlainContext(proc, superUser);
+
+    // assert(dir.open);
+    root.open(context, 'proc', (node: Node): void => {
+        // assert(node.link);
+        node.link(context, '0', proc, (): void => {
+            callback(context, root);
+        }, fail);
+    }, fail);
 }
 
-console.log(makeRoot('test'));
+boot(
+    'test',
+    [], [],
+    (context: Context, root: Node): void => {
+        console.log(context);
+        console.log(root);
+    },
+    (err: Error): void => {
+        console.log(err);
+    }
+);
