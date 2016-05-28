@@ -48,8 +48,7 @@ function makeProc(
     user: User,
     parent: Node,
     root: Node, dir: Node,
-    env: [string, Node][],
-    func: [string, Node][]
+    env: [string, Node][], func: [string, Node][]
 ): Node {
     return makeSysDir([
         ['parent', parent],

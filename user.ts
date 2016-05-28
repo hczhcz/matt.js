@@ -24,7 +24,7 @@ export class NoUser implements User {
 function userDistance(
     context: Context, owner: User,
     callback: ValFunc<number>, fail: ErrFunc
-) {
+): void {
     context.user((user: User): void => {
         user.superuser(context, (superuser: boolean): void => {
             if (superuser) {
