@@ -55,8 +55,20 @@ function makeProc(
         ['parent', parent],
         ['root', root],
         ['dir', dir],
-        ['env', makeUserDir(user, env)], // env: stdin, stdout, stderr
+        ['env', makeUserDir(user, env)], // env: args, stdin, stdout, stderr
         ['func', makeUserDir(user, func)], // func: main, signal
+    ]);
+}
+
+function makeProc0(
+    root: Node, dir: Node,
+    env: [string, Node][], func: [string, Node][]
+): Node {
+    return makeSysDir([
+        ['root', root],
+        ['dir', dir],
+        ['env', makeUserDir(superUser, env)], // env: args, stdin, stdout, stderr
+        ['func', makeUserDir(superUser, func)], // func: main, signal
     ]);
 }
 
@@ -79,13 +91,7 @@ function boot(
     ]);
 
     // create proc 0
-    const proc = makeSysDir([
-        ['root', root],
-        ['dir', root],
-        ['env', makeUserDir(superUser, env)], // env: stdin, stdout, stderr
-        ['func', makeUserDir(superUser, func)], // func: main, signal
-    ]);
-
+    const proc = makeProc0(root, root, env, func);
     const context = new PlainContext(proc, superUser);
 
     // mount proc 0
