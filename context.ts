@@ -55,5 +55,37 @@ export class PlainContext implements Context {
             fail(new SimpleError('???')); // TODO
         }
     }
+};
 
+export class ContextUser extends PlainContext implements User {
+    constructor(
+        proc: Node,
+        user: User
+    ) {
+        super(proc, user);
+    }
+
+    group(context: Context, callback: ValFunc<string>, fail: ErrFunc): void {
+        this.user((user: User): void => {
+            user.group(context, callback, fail);
+        });
+    }
+
+    name(context: Context, callback: ValFunc<string>, fail: ErrFunc): void {
+        this.user((user: User): void => {
+            user.name(context, callback, fail);
+        });
+    }
+
+    superuser(context: Context, callback: ValFunc<boolean>, fail: ErrFunc): void {
+        this.user((user: User): void => {
+            user.superuser(context, callback, fail);
+        });
+    }
+
+    distance(context: Context, callback: ValFunc<number>, fail: ErrFunc): void {
+        this.user((user: User): void => {
+            user.distance(context, callback, fail);
+        });
+    }
 };
