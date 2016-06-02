@@ -95,9 +95,7 @@ function boot(
     const context = new PlainContext(proc, superUser);
 
     // mount proc 0
-    // assert(dir.open);
     root.open(context, 'proc', (node: Node): void => {
-        // assert(node.link);
         node.link(context, '0', proc, (): void => {
             callback(context);
         }, fail);

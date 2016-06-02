@@ -50,7 +50,7 @@ function userDistance(
             }
         }, fail);
     });
-};
+}
 
 export class UnixUser implements User {
     constructor(private _group: string, private _name: string) {

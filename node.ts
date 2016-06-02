@@ -11,19 +11,19 @@ class NodeBase implements Node {
         //
     }
 
-    protected _read(context: Context, callback: VoidFunc, fail: ErrFunc) {
+    protected _read(context: Context, callback: VoidFunc, fail: ErrFunc): void {
         this._mode.check(context, this._owner, ModeActions.read, callback, fail);
     }
 
-    protected _write(context: Context, callback: VoidFunc, fail: ErrFunc) {
+    protected _write(context: Context, callback: VoidFunc, fail: ErrFunc): void {
         this._mode.check(context, this._owner, ModeActions.write, callback, fail);
     }
 
-    protected _exec(context: Context, callback: VoidFunc, fail: ErrFunc) {
+    protected _exec(context: Context, callback: VoidFunc, fail: ErrFunc): void {
         this._mode.check(context, this._owner, ModeActions.exec, callback, fail);
     }
 
-    protected _attr(context: Context, callback: VoidFunc, fail: ErrFunc) {
+    protected _attr(context: Context, callback: VoidFunc, fail: ErrFunc): void {
         this._mode.check(context, this._owner, ModeActions.attr, callback, fail);
     }
 
