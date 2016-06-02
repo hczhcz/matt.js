@@ -2,7 +2,7 @@
 
 import {SimpleError, ErrFunc, VoidFunc, ValFunc} from './util';
 import {Context, User, Node} from './interface';
-import {PlainContext} from './context';
+import {ContextUser} from './context';
 import {UnixUser, UnixSuperUser} from './user'
 import {UnixMode} from './mode';
 import {DirNode, FuncObjNode} from './node';
@@ -61,14 +61,15 @@ function makeProc(
 }
 
 function makeProc0(
+    user: User,
     root: Node, dir: Node,
     env: [string, Node][], func: [string, Node][]
 ): Node {
     return makeUserDir(user, [
         ['root', root],
         ['dir', dir],
-        ['env', makeUserDir(superUser, env)], // env: args, stdin, stdout, stderr
-        ['func', makeUserDir(superUser, func)], // func: main, signal
+        ['env', makeUserDir(user, env)], // env: args, stdin, stdout, stderr
+        ['func', makeUserDir(user, func)], // func: main, signal
     ]);
 }
 
@@ -91,15 +92,18 @@ function boot(
     ]);
 
     // create proc 0
-    const proc = makeProc0(root, root, env, func);
-    const context = new PlainContext(proc, superUser);
+    const cu: ContextUser = new ContextUser(undefined, superUser);
+    const context: Context = cu;
+    const proc = makeProc0(cu, root, root, env, func);
 
     // mount proc 0
-    root.open(context, 'proc', (node: Node): void => {
-        node.link(context, '0', proc, (): void => {
-            callback(context);
+    cu._setproc(proc, (): void => {
+        root.open(context, 'proc', (node: Node): void => {
+            node.link(context, '0', proc, (): void => {
+                callback(context);
+            }, fail);
         }, fail);
-    }, fail);
+    });
 }
 
 boot(
