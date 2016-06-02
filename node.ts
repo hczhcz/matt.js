@@ -66,7 +66,7 @@ class NodeBase implements Node {
     writeobj(...args: any[]): void {errMethod(...args);}
 };
 
-export class DirNode extends NodeBase implements Node {
+export class DirNode extends NodeBase {
     private static tag: string = 'ENTRY_';
     private _map: {[key: string]: Node} = {}; // mutable
 
@@ -161,7 +161,7 @@ export class DirNode extends NodeBase implements Node {
     }
 };
 
-export class RelLinkNode extends NodeBase implements Node {
+export class RelLinkNode extends NodeBase {
     constructor(
         mode: Mode,
         owner: User,
@@ -199,7 +199,7 @@ export class RelLinkNode extends NodeBase implements Node {
     }
 };
 
-export class AbsLinkNode extends NodeBase implements Node {
+export class AbsLinkNode extends NodeBase {
     constructor(
         mode: Mode,
         owner: User,
@@ -237,7 +237,7 @@ export class AbsLinkNode extends NodeBase implements Node {
     }
 };
 
-export class JsonObjNode extends NodeBase implements Node {
+export class JsonObjNode extends NodeBase {
     private _json: string; // mutable
 
     constructor(mode: Mode, owner: User, obj: any) {
@@ -266,7 +266,7 @@ export class JsonObjNode extends NodeBase implements Node {
     }
 };
 
-export class FuncObjNode extends NodeBase implements Node {
+export class FuncObjNode extends NodeBase {
     constructor(
         mode: Mode,
         owner: User,
