@@ -5,7 +5,7 @@ import {Context, User, Node} from './interface';
 
 export class PlainContext implements Context {
     constructor(
-        private _proc: Node,
+        private _proc: Node, // mutable, for initialization only
         private _user: User // mutable
     ) {
         //
@@ -19,7 +19,12 @@ export class PlainContext implements Context {
         callback(this._user);
     }
 
-    setuser(user: User, callback: VoidFunc): void {
+    _setproc(node: Node, callback: VoidFunc): void {
+        this._proc = node;
+        callback();
+    }
+
+    _setuser(user: User, callback: VoidFunc): void {
         this._user = user;
         callback();
     }
