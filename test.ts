@@ -7,7 +7,7 @@ import {UnixUser, UnixSuperUser} from './user'
 import {UnixMode} from './mode';
 import {DirNode, FuncObjNode} from './node';
 
-const superUser = new UnixSuperUser();
+const superUser: User = new UnixSuperUser();
 
 function makeSysDir(list: [string, Node][]): Node {
     return new DirNode(new UnixMode(7, 5, 5), superUser, list);
@@ -27,7 +27,7 @@ function makeAuth(user: User, password: string): Node {
         user,
         (context: Context, callback: ValFunc<any>, fail: ErrFunc): void => {
             // TODO: ask password
-            context.setuser(user, (): void => {
+            context._setuser(user, (): void => {
                 callback(true);
             });
         },
@@ -51,7 +51,7 @@ function makeProc(
     root: Node, dir: Node,
     env: [string, Node][], func: [string, Node][]
 ): Node {
-    return makeSysDir([
+    return makeUserDir(user, [
         ['parent', parent],
         ['root', root],
         ['dir', dir],
@@ -64,7 +64,7 @@ function makeProc0(
     root: Node, dir: Node,
     env: [string, Node][], func: [string, Node][]
 ): Node {
-    return makeSysDir([
+    return makeUserDir(user, [
         ['root', root],
         ['dir', dir],
         ['env', makeUserDir(superUser, env)], // env: args, stdin, stdout, stderr
