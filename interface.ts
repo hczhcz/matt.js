@@ -32,18 +32,18 @@ export interface Node {
     chown  (c_: Context, owner: User, cb_: VoidFunc, fl_: ErrFunc): void;
 
     // dir
-    readdir?(c_: Context, cb_: ValFunc<string[]>, fl_: ErrFunc): void;
-    link?   (c_: Context, name: string, node: Node, cb_: VoidFunc, fl_: ErrFunc): void;
-    unlink? (c_: Context, name: string, cb_: VoidFunc, fl_: ErrFunc): void;
-    swap?   (c_: Context, name: string, node: Node, cb_: VoidFunc, fl_: ErrFunc): void;
-    open?   (c_: Context, name: string, cb_: ValFunc<Node>, fl_: ErrFunc): void;
+    readdir(c_: Context, cb_: ValFunc<string[]>, fl_: ErrFunc): void;
+    link   (c_: Context, name: string, node: Node, cb_: VoidFunc, fl_: ErrFunc): void;
+    unlink (c_: Context, name: string, cb_: VoidFunc, fl_: ErrFunc): void;
+    swap   (c_: Context, name: string, node: Node, cb_: VoidFunc, fl_: ErrFunc): void;
+    open   (c_: Context, name: string, cb_: ValFunc<Node>, fl_: ErrFunc): void;
 
     // link
-    readlink? (c_: Context, cb_: ValFunc<string[]>, fl_: ErrFunc): void;
-    writelink?(c_: Context, path: string[], cb_: VoidFunc, fl_: ErrFunc): void;
-    trace?    (c_: Context, path: string[], cb_: ValFunc<string[]>, fl_: ErrFunc): void;
+    readlink (c_: Context, cb_: ValFunc<string[]>, fl_: ErrFunc): void;
+    writelink(c_: Context, path: string[], cb_: VoidFunc, fl_: ErrFunc): void;
+    trace    (c_: Context, path: string[], cb_: ValFunc<string[]>, fl_: ErrFunc): void;
 
     // obj
-    readobj? (c_: Context, cb_: ValFunc<any>, fl_: ErrFunc): void;
-    writeobj?(c_: Context, obj: any, cb_: VoidFunc, fl_: ErrFunc): void;
+    readobj (c_: Context, cb_: ValFunc<any>, fl_: ErrFunc): void;
+    writeobj(c_: Context, obj: any, cb_: VoidFunc, fl_: ErrFunc): void;
 };

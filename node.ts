@@ -1,9 +1,9 @@
 'use strict';
 
-import {SimpleError, ErrFunc, VoidFunc, ValFunc} from './util';
+import {SimpleError, ErrFunc, VoidFunc, ValFunc, errMethod} from './util';
 import {Context, User, ModeActions, Mode, Node} from './interface';
 
-class NodeBase {
+class NodeBase implements Node {
     constructor(
         private _mode: Mode, // mutable
         private _owner: User // mutable
@@ -53,6 +53,17 @@ class NodeBase {
             callback();
         }, fail);
     }
+
+    readdir(...args: any[]): void {errMethod(...args);}
+    link(...args: any[]): void {errMethod(...args);}
+    unlink(...args: any[]): void {errMethod(...args);}
+    swap(...args: any[]): void {errMethod(...args);}
+    open(...args: any[]): void {errMethod(...args);}
+    readlink(...args: any[]): void {errMethod(...args);}
+    writelink(...args: any[]): void {errMethod(...args);}
+    trace(...args: any[]): void {errMethod(...args);}
+    readobj(...args: any[]): void {errMethod(...args);}
+    writeobj(...args: any[]): void {errMethod(...args);}
 };
 
 export class DirNode extends NodeBase implements Node {
