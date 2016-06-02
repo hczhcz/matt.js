@@ -13,3 +13,7 @@ export interface VoidFunc {
 export interface ValFunc<T> {
     (value: T): void;
 };
+
+export function errMethod(...args: any[]): void {
+    <ErrFunc>(args[args.length - 1])(new SimpleError('not supported'));
+}
