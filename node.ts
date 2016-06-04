@@ -57,16 +57,19 @@ class NodeBase implements Node {
         }, fail);
     }
 
-    getdir(context: Context, callback: ValFunc<DirNode>, fail: ErrFunc): void {
-        fail(new SimpleError('not a directory'));
+    getdir(accept: ValFunc<DirNode>, deny: VoidFunc): void {
+        // fail(new SimpleError('not a directory'));
+        deny();
     }
 
-    getlink(context: Context, callback: ValFunc<LinkNode>, fail: ErrFunc): void {
-        fail(new SimpleError('not a link'));
+    getlink(accept: ValFunc<LinkNode>, deny: VoidFunc): void {
+        // fail(new SimpleError('not a link'));
+        deny();
     }
 
-    getobj(context: Context, callback: ValFunc<ObjNode>, fail: ErrFunc): void {
-        fail(new SimpleError('not an object'));
+    getobj(accept: ValFunc<ObjNode>, deny: VoidFunc): void {
+        // fail(new SimpleError('not an object'));
+        deny();
     }
 };
 
@@ -86,8 +89,8 @@ export class PlainDirNode extends NodeBase implements DirNode {
         };
     }
 
-    getdir(context: Context, callback: ValFunc<DirNode>, fail: ErrFunc): void {
-        callback(this);
+    getdir(accept: ValFunc<DirNode>, deny: ErrFunc): void {
+        accept(this);
     }
 
     readdir(
@@ -178,8 +181,8 @@ export class RelLinkNode extends NodeBase implements LinkNode {
         super(mode, owner);
     }
 
-    getlink(context: Context, callback: ValFunc<LinkNode>, fail: ErrFunc): void {
-        callback(this);
+    getlink(accept: ValFunc<LinkNode>, deny: ErrFunc): void {
+        accept(this);
     }
 
     readlink(
@@ -220,8 +223,8 @@ export class AbsLinkNode extends NodeBase implements LinkNode {
         super(mode, owner);
     }
 
-    getlink(context: Context, callback: ValFunc<LinkNode>, fail: ErrFunc): void {
-        callback(this);
+    getlink(accept: ValFunc<LinkNode>, deny: ErrFunc): void {
+        accept(this);
     }
 
     readlink(
@@ -262,8 +265,8 @@ export class JsonObjNode extends NodeBase implements ObjNode {
         this._json = JSON.stringify(obj);
     }
 
-    getobj(context: Context, callback: ValFunc<ObjNode>, fail: ErrFunc): void {
-        callback(this);
+    getobj(accept: ValFunc<ObjNode>, deny: ErrFunc): void {
+        accept(this);
     }
 
     readobj(
@@ -296,8 +299,8 @@ export class FuncObjNode extends NodeBase implements ObjNode {
         super(mode, owner);
     }
 
-    getobj(context: Context, callback: ValFunc<ObjNode>, fail: ErrFunc): void {
-        callback(this);
+    getobj(accept: ValFunc<ObjNode>, deny: ErrFunc): void {
+        accept(this);
     }
 
     readobj(

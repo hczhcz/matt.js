@@ -18,7 +18,7 @@ export class UnixMode implements Mode {
 
     private _check(
         distance: number, action: ModeActions,
-        accept: VoidFunc, denied: VoidFunc
+        accept: VoidFunc, deny: VoidFunc
     ): void {
         const mode: number = distance === 0 ? this._user
                            : distance === 1 ? this._group
@@ -32,7 +32,7 @@ export class UnixMode implements Mode {
         if ((mode & mask) === mask) {
             accept();
         } else {
-            denied();
+            deny();
         }
     }
 

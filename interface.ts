@@ -31,9 +31,9 @@ export interface Node {
     chmod(c_: Context, mode: Mode, cb_: VoidFunc, fl_: ErrFunc): void;
     chown(c_: Context, owner: User, cb_: VoidFunc, fl_: ErrFunc): void;
 
-    getdir(c_: Context, cb_: ValFunc<DirNode>, fl_: ErrFunc): void;
-    getlink(c_: Context, cb_: ValFunc<LinkNode>, fl_: ErrFunc): void;
-    getobj(c_: Context, cb_: ValFunc<ObjNode>, fl_: ErrFunc): void;
+    getdir(accept: ValFunc<DirNode>, deny: VoidFunc): void;
+    getlink(accept: ValFunc<LinkNode>, deny: VoidFunc): void;
+    getobj(accept: ValFunc<ObjNode>, deny: VoidFunc): void;
 };
 
 export interface DirNode extends Node {
