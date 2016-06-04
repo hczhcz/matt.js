@@ -4,11 +4,13 @@ import {SimpleError,  ErrFunc, VoidFunc, ValFunc} from './util';
 import {Context, User, Node, DirNode} from './interface';
 
 export class PlainContext implements Context {
+    private _proc: DirNode; // bind in constructor
+
     constructor(
-        private _proc: DirNode, // mutable, for initialization only
+        builder: () => DirNode,
         private _user: User // mutable
     ) {
-        //
+        this._proc = builder();
     }
 
     proc(callback: ValFunc<DirNode>): void {
@@ -17,11 +19,6 @@ export class PlainContext implements Context {
 
     user(callback: ValFunc<User>): void {
         callback(this._user);
-    }
-
-    _setproc(node: DirNode, callback: VoidFunc): void {
-        this._proc = node;
-        callback();
     }
 
     _setuser(user: User, callback: VoidFunc): void {
@@ -48,10 +45,12 @@ export class PlainContext implements Context {
 
 export class ContextUser extends PlainContext implements User {
     constructor(
-        proc: DirNode,
+        builder: (cu: ContextUser) => DirNode,
         user: User
     ) {
-        super(proc, user);
+        super((): DirNode => {
+            return builder(this);
+        }, user);
     }
 
     group(context: Context, callback: ValFunc<string>, fail: ErrFunc): void {

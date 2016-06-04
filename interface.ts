@@ -5,7 +5,6 @@ import {ErrFunc, VoidFunc, ValFunc} from './util';
 export interface Context {
     proc(cb_: ValFunc<DirNode>/* , fl_: ErrFunc */): void;
     user(cb_: ValFunc<User>/* , fl_: ErrFunc */): void;
-    _setproc(node: DirNode, cb_: VoidFunc/* , fl_: ErrFunc */): void; // internal use
     _setuser(user: User, cb_: VoidFunc/* , fl_: ErrFunc */): void; // internal use
 
     root(cb_: ValFunc<Node>, fl_: ErrFunc): void;

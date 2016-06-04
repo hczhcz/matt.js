@@ -103,16 +103,17 @@ function boot(
     ]);
 
     // create proc 0
-    const cu: ContextUser = new ContextUser(undefined, superUser);
-    const context: Context = cu;
-    const proc0 = makeProc0(cu, root, root, env, func);
+    let proc0: DirNode;
+    const context: Context = new ContextUser((cu: ContextUser): DirNode => {
+        proc0 = makeProc0(cu, root, root, env, func);
 
-    // mount proc 0
-    cu._setproc(proc0, (): void => {
-        proc.link(context, '0', proc0, (): void => {
-            callback(context);
-        }, fail);
-    });
+        return proc0;
+    }, superUser);
+
+    // mount proc dir
+    proc.link(context, '0', proc0, (): void => {
+        callback(context);
+    }, fail);
 }
 
 boot(
