@@ -32,19 +32,26 @@ export interface Node {
     chmod(c_: Context, mode: Mode, cb_: VoidFunc, fl_: ErrFunc): void;
     chown(c_: Context, owner: User, cb_: VoidFunc, fl_: ErrFunc): void;
 
-    // dir
+    getdir(c_: Context, cb_: ValFunc<DirNode>, fl_: ErrFunc): void;
+    getlink(c_: Context, cb_: ValFunc<LinkNode>, fl_: ErrFunc): void;
+    getobj(c_: Context, cb_: ValFunc<ObjNode>, fl_: ErrFunc): void;
+};
+
+export interface DirNode extends Node {
     readdir(c_: Context, cb_: ValFunc<string[]>, fl_: ErrFunc): void;
     link(c_: Context, name: string, node: Node, cb_: VoidFunc, fl_: ErrFunc): void;
     unlink(c_: Context, name: string, cb_: VoidFunc, fl_: ErrFunc): void;
     swap(c_: Context, name: string, node: Node, cb_: VoidFunc, fl_: ErrFunc): void;
     open(c_: Context, name: string, cb_: ValFunc<Node>, fl_: ErrFunc): void;
+};
 
-    // link
+export interface LinkNode extends Node {
     readlink(c_: Context, cb_: ValFunc<string[]>, fl_: ErrFunc): void;
     writelink(c_: Context, path: string[], cb_: VoidFunc, fl_: ErrFunc): void;
     trace(c_: Context, path: string[], cb_: ValFunc<string[]>, fl_: ErrFunc): void;
+};
 
-    // obj
+export interface ObjNode extends Node {
     readobj(c_: Context, cb_: ValFunc<any>, fl_: ErrFunc): void;
     writeobj(c_: Context, obj: any, cb_: VoidFunc, fl_: ErrFunc): void;
 };
