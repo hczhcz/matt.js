@@ -1,17 +1,17 @@
 'use strict';
 
 import {SimpleError,  ErrFunc, VoidFunc, ValFunc} from './util';
-import {Context, User, Node} from './interface';
+import {Context, User, Node, DirNode} from './interface';
 
 export class PlainContext implements Context {
     constructor(
-        private _proc: Node, // mutable, for initialization only
+        private _proc: DirNode, // mutable, for initialization only
         private _user: User // mutable
     ) {
         //
     }
 
-    proc(callback: ValFunc<Node>): void {
+    proc(callback: ValFunc<DirNode>): void {
         callback(this._proc);
     }
 
@@ -19,7 +19,7 @@ export class PlainContext implements Context {
         callback(this._user);
     }
 
-    _setproc(node: Node, callback: VoidFunc): void {
+    _setproc(node: DirNode, callback: VoidFunc): void {
         this._proc = node;
         callback();
     }
@@ -48,7 +48,7 @@ export class PlainContext implements Context {
 
 export class ContextUser extends PlainContext implements User {
     constructor(
-        proc: Node,
+        proc: DirNode,
         user: User
     ) {
         super(proc, user);
