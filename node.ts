@@ -66,7 +66,7 @@ class NodeBase implements Node {
     writeobj(...args: any[]): void {errMethod(...args);}
 };
 
-export class DirNode extends NodeBase {
+export class PlainDirNode extends NodeBase {
     private static tag: string = 'ENTRY_';
     private _map: {[key: string]: Node} = {}; // mutable
 
@@ -78,7 +78,7 @@ export class DirNode extends NodeBase {
         super(mode, owner);
 
         for (const pair of list) {
-            this._map[DirNode.tag + pair[0]] = pair[1];
+            this._map[PlainDirNode.tag + pair[0]] = pair[1];
         };
     }
 
@@ -90,7 +90,7 @@ export class DirNode extends NodeBase {
             let result: string[] = [];
 
             for (const name in this._map) {
-                result.push(name.slice(DirNode.tag.length));
+                result.push(name.slice(PlainDirNode.tag.length));
             }
 
             callback(result);
@@ -102,12 +102,12 @@ export class DirNode extends NodeBase {
         callback: VoidFunc, fail: ErrFunc
     ): void {
         this._write(context, (): void => {
-            const result: Node = this._map[DirNode.tag + name];
+            const result: Node = this._map[PlainDirNode.tag + name];
 
             if (result !== undefined) {
                 fail(new SimpleError('file exists'));
             } else {
-                this._map[DirNode.tag + name] = node;
+                this._map[PlainDirNode.tag + name] = node;
                 callback();
             }
         }, fail);
@@ -118,10 +118,10 @@ export class DirNode extends NodeBase {
         callback: VoidFunc, fail: ErrFunc
     ): void {
         this._write(context, (): void => {
-            const result: Node = this._map[DirNode.tag + name];
+            const result: Node = this._map[PlainDirNode.tag + name];
 
             if (result !== undefined) {
-                delete this._map[DirNode.tag + name];
+                delete this._map[PlainDirNode.tag + name];
                 callback();
             } else {
                 fail(new SimpleError('file not found'));
@@ -134,10 +134,10 @@ export class DirNode extends NodeBase {
         callback: VoidFunc, fail: ErrFunc
     ): void {
         this._write(context, (): void => {
-            const result: Node = this._map[DirNode.tag + name];
+            const result: Node = this._map[PlainDirNode.tag + name];
 
             if (result !== undefined) {
-                this._map[DirNode.tag + name] = node;
+                this._map[PlainDirNode.tag + name] = node;
                 callback();
             } else {
                 fail(new SimpleError('file not found'));
@@ -150,7 +150,7 @@ export class DirNode extends NodeBase {
         callback: ValFunc<Node>, fail: ErrFunc
     ): void {
         this._exec(context, (): void => {
-            const result: Node = this._map[DirNode.tag + name];
+            const result: Node = this._map[PlainDirNode.tag + name];
 
             if (result !== undefined) {
                 callback(result);

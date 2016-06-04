@@ -5,20 +5,24 @@ import {Context, User, Node} from './interface';
 import {ContextUser} from './context';
 import {UnixUser, UnixSuperUser} from './user'
 import {UnixMode} from './mode';
-import {DirNode, FuncObjNode} from './node';
+import {PlainDirNode, JsonObjNode, FuncObjNode} from './node';
 
 const superUser: User = new UnixSuperUser();
 
 function makeSysDir(list: [string, Node][]): Node {
-    return new DirNode(new UnixMode(7, 5, 5), superUser, list);
+    return new PlainDirNode(new UnixMode(7, 5, 5), superUser, list);
 }
 
 function makeUserDir(user: User, list: [string, Node][]): Node {
-    return new DirNode(new UnixMode(7, 5, 5), user, list);
+    return new PlainDirNode(new UnixMode(7, 5, 5), user, list);
 }
 
 function makeSuperUserDir(list: [string, Node][]): Node {
-    return new DirNode(new UnixMode(7, 0, 0), superUser, list);
+    return new PlainDirNode(new UnixMode(7, 0, 0), superUser, list);
+}
+
+function makeSysFile(obj: any): Node {
+    return new JsonObjNode(new UnixMode(6, 4, 4), superUser, obj);
 }
 
 function makeAuth(user: User, password: string): Node {
