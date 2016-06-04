@@ -1,7 +1,10 @@
 'use strict';
 
-import {SimpleError, ErrFunc, VoidFunc, ValFunc, errMethod} from './util';
-import {Context, User, ModeActions, Mode, Node} from './interface';
+import {SimpleError, ErrFunc, VoidFunc, ValFunc} from './util';
+import {
+    Context, User, ModeActions, Mode,
+    Node, DirNode, LinkNode, ObjNode
+} from './interface';
 
 class NodeBase implements Node {
     constructor(
@@ -54,19 +57,20 @@ class NodeBase implements Node {
         }, fail);
     }
 
-    readdir(...args: any[]): void {errMethod(...args);}
-    link(...args: any[]): void {errMethod(...args);}
-    unlink(...args: any[]): void {errMethod(...args);}
-    swap(...args: any[]): void {errMethod(...args);}
-    open(...args: any[]): void {errMethod(...args);}
-    readlink(...args: any[]): void {errMethod(...args);}
-    writelink(...args: any[]): void {errMethod(...args);}
-    trace(...args: any[]): void {errMethod(...args);}
-    readobj(...args: any[]): void {errMethod(...args);}
-    writeobj(...args: any[]): void {errMethod(...args);}
+    getdir(context: Context, callback: ValFunc<DirNode>, fail: ErrFunc): void {
+        fail(new SimpleError('not a directory'));
+    }
+
+    getlink(context: Context, callback: ValFunc<LinkNode>, fail: ErrFunc): void {
+        fail(new SimpleError('not a link'));
+    }
+
+    getobj(context: Context, callback: ValFunc<ObjNode>, fail: ErrFunc): void {
+        fail(new SimpleError('not an object'));
+    }
 };
 
-export class PlainDirNode extends NodeBase {
+export class PlainDirNode extends NodeBase implements DirNode {
     private static tag: string = 'ENTRY_';
     private _map: {[key: string]: Node} = {}; // mutable
 
@@ -80,6 +84,10 @@ export class PlainDirNode extends NodeBase {
         for (const pair of list) {
             this._map[PlainDirNode.tag + pair[0]] = pair[1];
         };
+    }
+
+    getdir(context: Context, callback: ValFunc<DirNode>, fail: ErrFunc): void {
+        callback(this);
     }
 
     readdir(
@@ -161,13 +169,17 @@ export class PlainDirNode extends NodeBase {
     }
 };
 
-export class RelLinkNode extends NodeBase {
+export class RelLinkNode extends NodeBase implements LinkNode {
     constructor(
         mode: Mode,
         owner: User,
         private _path: string[] // mutable
     ) {
         super(mode, owner);
+    }
+
+    getlink(context: Context, callback: ValFunc<LinkNode>, fail: ErrFunc): void {
+        callback(this);
     }
 
     readlink(
@@ -199,13 +211,17 @@ export class RelLinkNode extends NodeBase {
     }
 };
 
-export class AbsLinkNode extends NodeBase {
+export class AbsLinkNode extends NodeBase implements LinkNode {
     constructor(
         mode: Mode,
         owner: User,
         private _path: string[] // mutable
     ) {
         super(mode, owner);
+    }
+
+    getlink(context: Context, callback: ValFunc<LinkNode>, fail: ErrFunc): void {
+        callback(this);
     }
 
     readlink(
@@ -237,13 +253,17 @@ export class AbsLinkNode extends NodeBase {
     }
 };
 
-export class JsonObjNode extends NodeBase {
+export class JsonObjNode extends NodeBase implements ObjNode {
     private _json: string; // mutable
 
     constructor(mode: Mode, owner: User, obj: any) {
         super(mode, owner);
 
         this._json = JSON.stringify(obj);
+    }
+
+    getobj(context: Context, callback: ValFunc<ObjNode>, fail: ErrFunc): void {
+        callback(this);
     }
 
     readobj(
@@ -266,7 +286,7 @@ export class JsonObjNode extends NodeBase {
     }
 };
 
-export class FuncObjNode extends NodeBase {
+export class FuncObjNode extends NodeBase implements ObjNode {
     constructor(
         mode: Mode,
         owner: User,
@@ -274,6 +294,10 @@ export class FuncObjNode extends NodeBase {
         private _writehook: (c_: Context, obj: any, cb_: VoidFunc, fl_: ErrFunc) => void
     ) {
         super(mode, owner);
+    }
+
+    getobj(context: Context, callback: ValFunc<ObjNode>, fail: ErrFunc): void {
+        callback(this);
     }
 
     readobj(
