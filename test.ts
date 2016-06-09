@@ -29,13 +29,13 @@ function makeAuth(user: User, password: string): ObjNode {
     return new FuncObjNode(
         new UnixMode(4, 4, 4),
         user,
-        (context: Context, callback: ValFunc<any>, fail: ErrFunc): void => {
+        (caller: Context, callback: ValFunc<any>, fail: ErrFunc): void => {
             // TODO: ask password
-            context._setuser(user, (): void => {
+            caller._setuser(user, (): void => {
                 callback(true);
             });
         },
-        (context: Context, obj: any, callback: VoidFunc, fail: ErrFunc): void => {
+        (caller: Context, obj: any, callback: VoidFunc, fail: ErrFunc): void => {
             fail(new SimpleError('not writable'));
         }
     );

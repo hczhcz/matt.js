@@ -293,8 +293,12 @@ export class FuncObjNode extends NodeBase implements ObjNode {
     constructor(
         mode: Mode,
         owner: User,
-        private _readhook: (c_: Context, cb_: ValFunc<any>, fl_: ErrFunc) => void,
-        private _writehook: (c_: Context, obj: any, cb_: VoidFunc, fl_: ErrFunc) => void
+        private _readhook: (
+            caller: Context, cb_: ValFunc<any>, fl_: ErrFunc
+        ) => void,
+        private _writehook: (
+            caller: Context, obj: any, cb_: VoidFunc, fl_: ErrFunc
+        ) => void
     ) {
         super(mode, owner);
     }
