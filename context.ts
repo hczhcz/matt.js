@@ -1,6 +1,6 @@
 'use strict';
 
-import {SimpleError,  ErrFunc, VoidFunc, ValFunc} from './util';
+import {ErrFunc, VoidFunc, ValFunc} from './util';
 import {Context, User, Node, DirNode} from './interface';
 
 export class PlainContext implements Context {
